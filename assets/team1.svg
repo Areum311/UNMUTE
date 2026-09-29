@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+<rect width="800" height="1000" fill="#0b1018"/>
+<circle cx="400" cy="410" r="120" fill="#161d29" stroke="#ec6f9d" stroke-opacity=".45" stroke-width="4"/>
+<path d="M190 900c20-190 110-290 210-290s190 100 210 290" fill="#161d29" stroke="#ec6f9d" stroke-opacity=".38" stroke-width="4"/>
+<text x="400" y="130" text-anchor="middle" fill="#768196" font-family="Arial,sans-serif" font-size="30" letter-spacing="8">TEAM PHOTO 1</text>
+<text x="400" y="960" text-anchor="middle" fill="#586275" font-family="Arial,sans-serif" font-size="22" letter-spacing="4">REPLACE THIS IMAGE</text>
+</svg>

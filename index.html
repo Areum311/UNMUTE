@@ -1,0 +1,1896 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#070a10" />
+  <title>UNMUTE: The Vivid World</title>
+  <style>
+    :root {
+      --bg: #070a10;
+      --panel: rgba(12, 16, 25, .78);
+      --panel-solid: #0d111a;
+      --text: #eef2f7;
+      --muted: #98a3b4;
+      --line: rgba(255,255,255,.11);
+      --pink: #ec6f9d;
+      --cyan: #65d7e9;
+      --max: 1180px;
+      --nav-h: 68px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 18% 18%, rgba(101,215,233,.035), transparent 24rem),
+        radial-gradient(circle at 80% 55%, rgba(236,111,157,.035), transparent 26rem),
+        var(--bg);
+      font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: .18;
+      background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.014) 1px, transparent 1px);
+      background-size: 3px 3px, 3px 3px;
+      mix-blend-mode: soft-light;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      z-index: 50;
+      background: linear-gradient(to bottom, rgba(4,6,10,.92), rgba(4,6,10,.35), transparent);
+      backdrop-filter: blur(4px);
+    }
+
+    .nav-inner {
+      width: min(calc(100% - 40px), var(--max));
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+    }
+
+    .brand img {
+      height: 48px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+
+    .brand span { color: var(--muted); font-weight: 500; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: #c5cbd4;
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .nav-links a { transition: color .2s ease; }
+    .nav-links a:hover { color: #fff; }
+
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: grid;
+      place-items: end center;
+      isolation: isolate;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: -3;
+      background-image: url('assets/bg_img_out.png');
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.02);
+      filter: grayscale(.72) saturate(.52) brightness(.66) contrast(1.06);
+      transition: filter 1.2s ease, transform 4s ease;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(to bottom, rgba(5,7,11,.12) 0%, rgba(5,7,11,.24) 45%, rgba(5,7,11,.95) 100%),
+        radial-gradient(circle at 50% 54%, transparent 0 20%, rgba(4,6,10,.25) 56%, rgba(4,6,10,.72) 100%);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 38%;
+      z-index: -1;
+      background: linear-gradient(to top, var(--bg), transparent);
+    }
+
+    .hero-content {
+      width: min(calc(100% - 40px), var(--max));
+      padding: 0 0 10vh;
+    }
+
+    .hero-logo-wrap {
+      margin: 15px 0 20px;
+    }
+
+    .hero-logo {
+      width: 450px;
+      max-width: 70vw;
+      height: auto;
+      display: block;
+    }
+
+    .eyebrow {
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .title {
+      margin: 0;
+      font-weight: 900;
+      font-size: clamp(54px, 12vw, 150px);
+      letter-spacing: -.065em;
+      line-height: .8;
+      text-transform: uppercase;
+      text-shadow: 0 0 30px rgba(255,255,255,.05);
+    }
+
+    .subtitle {
+      margin: 16px 0 0;
+      font-size: clamp(18px, 2.3vw, 30px);
+      font-weight: 300;
+      letter-spacing: .04em;
+      color: #d8dde5;
+    }
+
+    .hero-copy {
+      margin: 28px 0 0;
+      max-width: 530px;
+      color: #aab3bf;
+      font-size: clamp(14px, 1.8vw, 18px);
+      line-height: 1.8;
+    }
+
+    .scroll-cue {
+      margin-top: 42px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #8994a5;
+      font-size: 10px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .scroll-cue i {
+      width: 36px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--pink), var(--cyan));
+      display: inline-block;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse { 50% { opacity: .3; transform: scaleX(.55); transform-origin: left; } }
+
+    .section {
+      width: min(calc(100% - 40px), var(--max));
+      margin: 0 auto;
+      padding: clamp(90px, 12vw, 170px) 0;
+      position: relative;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      color: #7f8998;
+      font-size: 11px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+    .section-label::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    .section h2 {
+      margin: 0;
+      font-size: clamp(36px, 6vw, 72px);
+      letter-spacing: -.045em;
+      line-height: 1.02;
+    }
+
+    .world-grid {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: clamp(36px, 7vw, 90px);
+      align-items: center;
+    }
+
+    .world-copy p {
+      margin: 26px 0 0;
+      max-width: 560px;
+      color: #b6bec9;
+      line-height: 1.9;
+      font-size: clamp(15px, 1.7vw, 19px);
+    }
+
+    .world-frame {
+      position: relative;
+      min-height: 520px;
+      border: 1px solid var(--line);
+      overflow: hidden;
+      background: #0a0e15;
+    }
+
+    .world-frame img {
+      width: 100%;
+      height: 100%;
+      min-height: 520px;
+      object-fit: cover;
+      object-position: 50% 52%;
+      filter: saturate(.58) brightness(.84);
+      transition: filter 1s ease, transform 1.8s ease;
+    }
+
+    .world-frame::after {
+      content: "ROOM / 01";
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      color: rgba(255,255,255,.5);
+      font-size: 10px;
+      letter-spacing: .22em;
+    }
+
+    .character-desc {
+      font-size: 18px !important;
+    }
+
+    .characters {
+      padding-top: clamp(70px, 9vw, 120px);
+    }
+
+    .character-grid {
+      margin-top: 50px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+    }
+
+    .character-card {
+      position: relative;
+      min-height: 690px;
+      border: 1px solid var(--line);
+      overflow: hidden;
+      background: linear-gradient(160deg, rgba(255,255,255,.045), rgba(255,255,255,.01));
+      isolation: isolate;
+    }
+
+    .character-card::before {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 58%;
+      z-index: 1;
+      background: linear-gradient(to top, rgba(5,7,11,.98), rgba(5,7,11,.3), transparent);
+    }
+
+    .character-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 18%;
+      filter: saturate(.7) contrast(1.02) brightness(.92);
+      transform: scale(1.02);
+    }
+
+    .character-card.protagonist img { object-position: 50% 18%; }
+    .character-card.echo img { object-position: 50% 18%; }
+
+    .character-card.protagonist::after,
+    .character-card.echo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: .34;
+    }
+    .character-card.protagonist::after { background: radial-gradient(circle at 45% 48%, rgba(236,111,157,.2), transparent 38%); }
+    .character-card.echo::after { background: radial-gradient(circle at 55% 44%, rgba(101,215,233,.2), transparent 38%); }
+
+    .character-info {
+      position: absolute;
+      z-index: 2;
+      left: 28px;
+      right: 28px;
+      bottom: 28px;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-bottom: 12px;
+      font-size: 10px;
+      letter-spacing: .18em;
+      color: #bac2cc;
+      text-transform: uppercase;
+    }
+    .protagonist .tag { color: #f0a0bc; }
+    .echo .tag { color: #9ce8f3; }
+
+    .character-info h3 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 45px);
+      letter-spacing: -.03em;
+    }
+
+    .character-info p {
+      margin: 12px 0 0;
+      color: #afb8c4;
+      font-size: 14px;
+      line-height: 1.75;
+      max-width: 460px;
+    }
+
+    .signal {
+      position: relative;
+      width: 100%;
+      padding: clamp(100px, 13vw, 170px) 0;
+      overflow: hidden;
+      border-block: 1px solid rgba(255,255,255,.06);
+      background:
+        radial-gradient(circle at 25% 50%, rgba(236,111,157,.10), transparent 30rem),
+        radial-gradient(circle at 78% 50%, rgba(101,215,233,.11), transparent 30rem),
+        #080c13;
+    }
+
+    .signal-inner {
+      width: min(calc(100% - 40px), var(--max));
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .signal h2 {
+      margin: 0;
+      font-size: clamp(42px, 9vw, 104px);
+      letter-spacing: -.055em;
+      line-height: .95;
+      text-transform: uppercase;
+    }
+
+    .signal h2 .pink { color: var(--pink); text-shadow: 0 0 24px rgba(236,111,157,.16); }
+    .signal h2 .cyan { color: var(--cyan); text-shadow: 0 0 24px rgba(101,215,233,.16); }
+
+    .signal p {
+      margin: 26px auto 0;
+      max-width: 620px;
+      color: #9da8b7;
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    .wave {
+      height: 80px;
+      margin: 48px auto 0;
+      max-width: 780px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      opacity: .75;
+    }
+    .wave span {
+      width: 3px;
+      height: 12px;
+      background: linear-gradient(to top, var(--pink), #e8edf2 48%, var(--cyan));
+      animation: wave 1.2s ease-in-out infinite;
+      animation-delay: calc(var(--i) * -70ms);
+      border-radius: 999px;
+    }
+    @keyframes wave { 50% { height: 66px; opacity: 1; } }
+
+    .gameplay {
+      width: 100%;
+      position: relative;
+      min-height: 820px;
+      display: grid;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .gameplay-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('asset/bg_img_out.png');
+      background-size: cover;
+      background-position: center;
+      filter: saturate(.85) brightness(.56);
+      transform: scale(1.02);
+    }
+    .gameplay::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(5,7,11,.97) 0%, rgba(5,7,11,.78) 45%, rgba(5,7,11,.28) 100%);
+    }
+
+    .gameplay-inner {
+      width: min(calc(100% - 40px), var(--max));
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+      padding: 110px 0;
+    }
+
+    .steps {
+      margin-top: 42px;
+      display: grid;
+      gap: 12px;
+      max-width: 650px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      gap: 18px;
+      align-items: start;
+      padding: 20px 0;
+      border-top: 1px solid rgba(255,255,255,.12);
+    }
+    .step:last-child { border-bottom: 1px solid rgba(255,255,255,.12); }
+    .step .num {
+      color: #747e8e;
+      font-size: 11px;
+      letter-spacing: .15em;
+      padding-top: 4px;
+    }
+    .step strong { display: block; font-size: 18px; letter-spacing: -.01em; }
+    .step p { margin: 7px 0 0; color: #aab3bf; line-height: 1.7; font-size: 14px; }
+
+    .controls {
+      text-align: center;
+      padding-bottom: 130px;
+    }
+
+    .controls p {
+      max-width: 600px;
+      margin: 22px auto 0;
+      color: #9ca6b4;
+      line-height: 1.8;
+    }
+
+    .control-grid {
+      margin: 44px auto 0;
+      max-width: 760px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .control-card {
+      min-height: 150px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.025);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .control-card b {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+    .control-card span {
+      display: block;
+      color: #697384;
+      font-size: 11px;
+      letter-spacing: .1em;
+    }
+
+
+
+    .team {
+      padding-top: 80px;
+    }
+
+    .team-intro {
+      max-width: 650px;
+      margin-top: 22px;
+      color: #9ca6b4;
+      line-height: 1.8;
+    }
+
+    .team-grid {
+      margin-top: 44px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .team-card {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.025);
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .team-photo {
+      aspect-ratio: 4 / 5;
+      width: 100%;
+      object-fit: cover;
+      background: #0b1018;
+      filter: saturate(.72) brightness(.9);
+    }
+
+    .team-info {
+      padding: 20px;
+    }
+
+    .team-role {
+      display: block;
+      margin-bottom: 9px;
+      color: #788395;
+      font-size: 10px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    .team-info h3 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: -.02em;
+    }
+
+    .team-info p {
+      margin: 9px 0 0;
+      color: #9da7b5;
+      line-height: 1.65;
+      font-size: 13px;
+    }
+
+    .footer {
+      width: min(calc(100% - 40px), var(--max));
+      margin: 0 auto;
+      padding: 28px 0 42px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      color: #606b7a;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      font-size: 11px;
+      letter-spacing: .08em;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .8s ease, transform .8s cubic-bezier(.2,.75,.25,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .color-awake .hero-bg { filter: grayscale(.35) saturate(.72) brightness(.68) contrast(1.05); }
+    .world-frame.awake img { filter: saturate(.85) brightness(.88); transform: scale(1.015); }
+
+    @media (max-width: 840px) {
+      :root { --nav-h: 58px; }
+      .nav-inner { width: min(calc(100% - 28px), var(--max)); }
+      .brand { font-size: 11px; }
+      .nav-links { display: none; }
+
+      .hero-content,
+      .section,
+      .signal-inner,
+      .gameplay-inner,
+      .footer { width: min(calc(100% - 28px), var(--max)); }
+
+      .hero { min-height: 92svh; }
+      .hero-bg { background-position: 58% center; }
+      .hero-content { padding-bottom: 11vh; }
+      .title { font-size: clamp(54px, 20vw, 88px); }
+      .subtitle { font-size: 18px; }
+      .hero-copy { max-width: 88%; }
+
+      .world-grid { grid-template-columns: 1fr; }
+      .world-frame { min-height: 420px; order: -1; }
+      .world-frame img { min-height: 420px; }
+
+      .character-grid { grid-template-columns: 1fr; }
+      .character-card { min-height: 620px; }
+      .character-info { left: 22px; right: 22px; bottom: 22px; }
+
+      .signal { padding: 100px 0; }
+      .wave { gap: 3px; overflow: hidden; }
+
+      .gameplay { min-height: 760px; }
+      .gameplay-bg { background-position: 62% center; }
+      .gameplay::after { background: linear-gradient(to bottom, rgba(5,7,11,.54) 0%, rgba(5,7,11,.78) 42%, rgba(5,7,11,.98) 100%); }
+      .gameplay-inner { padding: 280px 0 90px; }
+
+      .control-grid { grid-template-columns: 1fr; max-width: 430px; }
+      .control-card { min-height: 112px; }
+
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+
+      .footer { flex-direction: column; }
+
+      .brand img {height: 38px;}
+    }
+
+    @media (max-width: 520px) {
+      .section { padding: 88px 0; }
+      .character-card { min-height: 560px; }
+      .character-card img { object-position: center 12%; }
+      .team-grid { grid-template-columns: 1fr; }
+      .signal h2 { font-size: clamp(38px, 14vw, 68px); }
+      .step { grid-template-columns: 46px 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+    /* ========================================
+   04 / CONTROLS
+======================================== */
+
+.controls-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.controls-inner {
+  width: min(1100px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.controls-title {
+  margin: 24px 0 80px;
+
+  font-size: clamp(54px, 9vw, 120px);
+  line-height: 0.9;
+
+  letter-spacing: -0.055em;
+  font-weight: 700;
+}
+
+/* 양손 사용 가능 표시 */
+
+.hand-support {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-top: 16px;
+}
+
+.hand-support span {
+  width: 26px;
+  height: 26px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.hand-support strong {
+  margin-left: 4px;
+
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* --------------------
+   COMMON BLOCK
+-------------------- */
+
+.control-block {
+  padding: 55px 0;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.control-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 25px;
+
+  margin-bottom: 35px;
+}
+
+.control-heading > span {
+  margin-top: 5px;
+
+  font-size: 11px;
+  letter-spacing: 0.15em;
+
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.control-heading h3 {
+  margin: 0;
+
+  font-size: 22px;
+  letter-spacing: 0.04em;
+}
+
+.control-heading p {
+  margin: 7px 0 0;
+
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+
+/* ========================================
+   KEYBOARD
+======================================== */
+
+.keyboard-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 14px;
+}
+
+.keyboard-item {
+  min-height: 180px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding: 25px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.015)
+    );
+}
+
+.key-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 7px;
+}
+
+.key-group kbd {
+  min-width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 11px;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  color: #ffffff;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-bottom: 3px solid rgba(255, 255, 255, 0.15);
+
+  border-radius: 4px;
+}
+
+.key-group .key-wide {
+  min-width: 90px;
+}
+
+.key-or {
+  margin: 0 4px;
+
+  font-size: 11px;
+
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.key-info {
+  margin-top: 35px;
+}
+
+.key-info strong {
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+
+.key-info p {
+  margin: 0;
+
+  font-size: 14px;
+
+  color: rgba(255, 255, 255, 0.55);
+}
+
+
+/* ========================================
+   GESTURE
+======================================== */
+
+.gesture-block {
+  margin-top: 40px;
+}
+
+.gesture-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 14px;
+}
+
+.gesture-card {
+  position: relative;
+
+  min-height: 220px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 25px;
+
+  padding: 32px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0.012)
+    );
+
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease;
+}
+
+.gesture-card:hover {
+  transform: translateY(-4px);
+}
+
+
+/* SCRATCH */
+.gesture-card.scratch:hover {
+  border-color: rgba(39, 214, 255, 0.65);
+}
+
+
+/* DRUM */
+.gesture-card.drum:hover {
+  border-color: rgba(35, 255, 143, 0.65);
+}
+
+
+/* FADER */
+.gesture-card.fader:hover {
+  border-color: rgba(255, 49, 221, 0.65);
+}
+
+
+/* KNOB */
+.gesture-card.knob:hover {
+  border-color: rgba(220, 255, 0, 0.65);
+}
+
+
+.gesture-icon {
+  width: 110px;
+  min-width: 110px;
+  aspect-ratio: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gesture-icon img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+.gesture-text span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 9px;
+  letter-spacing: 0.18em;
+
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.gesture-text h4 {
+  margin: 0 0 12px;
+
+  font-size: 28px;
+  letter-spacing: 0.03em;
+}
+
+.gesture-text p {
+  margin: 0;
+
+  line-height: 1.7;
+
+  font-size: 14px;
+
+  color: rgba(255, 255, 255, 0.6);
+}
+
+
+/* ========================================
+   PLAY GUIDE
+======================================== */
+
+.play-guide {
+  margin-top: 40px;
+}
+
+.guide-list {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.guide-item {
+  min-height: 75px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 20px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.guide-item p {
+  margin: 0;
+
+  font-size: 14px;
+
+  color: rgba(255, 255, 255, 0.65);
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 760px) {
+  .hero-logo {
+    width: 300px;
+    max-width: 85vw;
+  }
+
+  .controls-inner {
+    width: min(100% - 32px, 1100px);
+  }
+
+  .controls-title {
+    margin-bottom: 55px;
+  }
+
+  .control-block {
+    padding: 42px 0;
+  }
+
+
+  /* Keyboard */
+
+  .keyboard-list {
+    grid-template-columns: 1fr;
+  }
+
+  .keyboard-item {
+    min-height: 150px;
+  }
+
+
+  /* Gesture */
+
+  .gesture-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gesture-card {
+    min-height: 170px;
+
+    padding: 25px 20px;
+  }
+
+  .gesture-icon {
+    width: 85px;
+    min-width: 85px;
+  }
+
+  .gesture-text h4 {
+    font-size: 22px;
+  }
+
+
+  /* Guide */
+
+  .guide-item {
+    grid-template-columns: 40px 1fr;
+
+    padding: 18px 5px;
+
+    min-height: auto;
+  }
+
+  .hand-support {
+    flex-wrap: wrap;
+  }
+
+  .hand-support strong {
+    font-size: 8px;
+  }
+
+  
+
+}
+
+/* ========================================
+   GAMEPLAY LAYOUT
+======================================== */
+
+.gameplay-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.15fr)
+    minmax(360px, .85fr);
+
+  grid-template-areas:
+    "heading preview"
+    "steps   preview";
+
+  column-gap: 70px;
+  row-gap: 30px;
+
+  align-items: start;
+}
+
+
+/* TITLE */
+
+.gameplay-heading {
+  grid-area: heading;
+}
+
+.gameplay-heading h2 {
+  margin: 25px 0 10px;
+}
+
+
+/* STEPS */
+
+.steps {
+  grid-area: steps;
+  width: 100%;
+}
+
+.step {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 55px 1fr;
+  gap: 20px;
+
+  padding: 24px 0;
+
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
+
+  background: transparent;
+  color: inherit;
+
+  font: inherit;
+  text-align: left;
+
+  cursor: pointer;
+
+  opacity: .58;
+
+  transition:
+    opacity .3s ease,
+    padding-left .3s ease,
+    border-color .3s ease;
+}
+
+.step:first-child {
+  border-top: 1px solid rgba(255, 255, 255, .12);
+}
+
+.step:hover,
+.step.active {
+  opacity: 1;
+  padding-left: 8px;
+}
+
+.step.active {
+  border-color: rgba(255, 255, 255, .28);
+}
+
+.step .num {
+  padding-top: 4px;
+
+  font-size: 10px;
+  letter-spacing: .15em;
+
+  color: rgba(255, 255, 255, .45);
+}
+
+.step strong {
+  display: block;
+  margin-bottom: 8px;
+
+  font-size: 18px;
+}
+
+.step p {
+  margin: 0;
+
+  font-size: 14px;
+  line-height: 1.75;
+
+  color: rgba(255, 255, 255, .62);
+}
+
+
+/* ========================================
+   GAMEPLAY IMAGE
+======================================== */
+
+.gameplay-preview {
+  grid-area: preview;
+
+  position: sticky;
+  top: 110px;
+
+  width: 100%;
+  aspect-ratio: 4 / 5;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, .12);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, .045),
+      rgba(255, 255, 255, .012)
+    );
+}
+
+
+/* 이미지 */
+
+.gameplay-preview-img {
+  width: 100%;
+  height: 100%;
+
+  display: none;
+  object-fit: cover;
+
+  opacity: 0;
+
+  filter:
+    grayscale(.7)
+    saturate(.65)
+    brightness(.78);
+
+  transition:
+    opacity .4s ease,
+    filter .6s ease;
+}
+
+.gameplay-preview.has-image .gameplay-preview-img {
+  display: block;
+  opacity: 1;
+}
+
+
+/* 이미지가 없을 때 */
+
+.gameplay-placeholder {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  padding: 30px;
+}
+
+.gameplay-placeholder span {
+  margin-bottom: 8px;
+
+  font-size: 9px;
+  letter-spacing: .2em;
+
+  color: rgba(255, 255, 255, .35);
+}
+
+.gameplay-placeholder strong {
+  font-size: 27px;
+}
+
+.gameplay-placeholder p {
+  margin: 7px 0 0;
+
+  font-size: 11px;
+
+  color: rgba(255, 255, 255, .35);
+}
+
+.gameplay-preview.has-image .gameplay-placeholder {
+  display: none;
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 760px) {
+
+  .gameplay-layout {
+    display: grid;
+
+    grid-template-columns: 1fr;
+
+    grid-template-areas:
+      "heading"
+      "preview"
+      "steps";
+
+    gap: 28px;
+  }
+
+
+  /* 모바일에서는 이미지가 제목 바로 아래 */
+
+  .gameplay-preview {
+    position: relative;
+    top: auto;
+
+    aspect-ratio: 16 / 10;
+  }
+
+
+  .gameplay-placeholder {
+    padding: 20px;
+  }
+
+  .gameplay-placeholder strong {
+    font-size: 21px;
+  }
+
+
+  /* 터치할 영역을 조금 넉넉하게 */
+
+  .step {
+    grid-template-columns: 38px 1fr;
+
+    padding: 22px 0;
+
+    opacity: .48;
+  }
+
+  .step.active {
+    opacity: 1;
+    padding-left: 6px;
+  }
+
+  .step strong {
+    font-size: 17px;
+  }
+
+  .step p {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+}
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <!-- 로고가 완성되면 이 텍스트를 <img src="assets/logo.png" alt="UNMUTE: The Vivid World"> 로 교체하면 됩니다. -->
+      <a class="brand" href="#top">
+        <img src="assets/unmute_white.png" alt="UNMUTE: The Vivid World">
+      </a>
+      <nav class="nav-links" aria-label="주요 메뉴">
+        <a href="#story">Story</a>
+        <a href="#characters">Characters</a>
+        <a href="#gameplay">Gameplay</a>
+        <a href="#controls">Controls</a>
+        <a href="#team">Team</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-content reveal">
+        <div class="eyebrow">New Chrome / Emotion Controlled</div>
+        <div class="hero-logo-wrap">
+        <img src="assets/unmute_white.png" alt="UNMUTE: The Vivid World" class="hero-logo">
+      </div>
+        <p class="hero-copy">음악과 감정이 통제된 도시, 뉴크롬<br>금지된 선율이, 도시의 침묵을 깨뜨리기 시작한다.</p>
+        <a class="scroll-cue" href="#story"><i></i> Scroll to enter</a>
+      </div>
+    </section>
+
+    <section class="section" id="story">
+      <div class="world-grid">
+        <div class="world-copy reveal">
+          <div class="section-label">01 / Story</div>
+          <h2>흑백의 도시를,<br>음악으로 깨우다.</h2>
+          <p>정체불명의 통치자에 의해 음악과 감정이 통제된 도시, 뉴크롬.<br>시민들은 뇌에 이식된 칩을 통해 음악과 감정을 차단당한 채 살아간다.</p>
+          <p>칩을 이식받지 않은 채 세상과 단절되어 살아가던 전직 DJ는 어느 날 에코를 만나 다시 음악을 마주하게 된다. 그 만남을 계기로 주인공은 방 밖으로 나서고, 흑백으로 굳어 있던 뉴크롬에도 조금씩 변화가 번져간다.</p>
+        </div>
+        <figure class="world-frame reveal" aria-label="주인공의 방">
+          <img src="assets/bg_img_in.png" alt="어둡고 정적인 주인공의 방과 음악 장비" />
+        </figure>
+      </div>
+    </section>
+
+    <section class="section characters" id="characters">
+      <div class="reveal">
+        <div class="section-label">02 / Characters</div>
+        <h2>두 명의 예외</h2>
+      </div>
+      <div class="character-grid">
+        <article class="character-card protagonist reveal">
+          <img src="assets/protagonist.png" alt="UNMUTE의 주인공" />
+          <div class="character-info">
+            <span class="tag">Former DJ / System Unregistered</span>
+            <h3>주인공</h3>
+            <p class="character-desc">과거의 사건 이후 음악을 놓고 세상과 멀어졌다. 사회 시스템에서 벗어나 있었기에 칩 이식을 피한 채 남아 있다.</p>
+          </div>
+        </article>
+
+        <article class="character-card echo reveal">
+          <img src="assets/echo.png" alt="UNMUTE의 조력자 에코" />
+          <div class="character-info">
+            <span class="tag">Chip Implanted / Still Responsive</span>
+            <h3>ECHO</h3>
+            <p class="character-desc">칩을 이식받았지만 완전히 무뎌지지 않은 인물. 시스템 안에 있으면서도 그 이면에 숨겨진 진실을 알고 있다.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="gameplay" id="gameplay">
+  <div class="gameplay-bg" aria-hidden="true"></div>
+
+  <div class="gameplay-inner">
+    <div class="gameplay-layout">
+
+      <!-- 제목 -->
+      <div class="gameplay-heading reveal">
+        <div class="section-label">03 / Gameplay</div>
+        <h1>
+          도시를 걷고,<br>
+          통제를 흔든다.
+        </h1>
+      </div>
+
+
+      <!-- 플레이 단계 -->
+      <div class="steps">
+
+        <button
+          class="step reveal active"
+          type="button"
+          data-label="DISCOVER"
+          data-image=""
+        >
+          <span class="num">01</span>
+
+          <div>
+            <strong>DISCOVER</strong>
+            <p>
+              다시 음악을 마주한다. 에코가 가져온 의문의 택배에서 발견한 DJ 컨트롤러.
+              오랜만에 음악을 연주한 주인공에게서 에코는 새로운 가능성을 발견한다.
+            </p>
+          </div>
+        </button>
+
+
+        <button
+          class="step reveal"
+          type="button"
+          data-label="STEP OUT"
+          data-image=""
+        >
+          <span class="num">02</span>
+
+          <div>
+            <strong>STEP OUT</strong>
+            <p>
+              에코와 함께 밖으로 나온 주인공은 그제야 자신이 알던 세상이
+              완전히 달라졌음을 마주한다.
+            </p>
+          </div>
+        </button>
+
+
+        <button
+          class="step reveal"
+          type="button"
+          data-label="CONFRONT"
+          data-image=""
+        >
+          <span class="num">03</span>
+
+          <div>
+            <strong>CONFRONT</strong>
+            <p>
+              뉴크롬을 나아가는 과정에서 시스템의 통제 아래 놓인 인물들과 만나고,
+              음악으로 그들과 맞선다.
+            </p>
+          </div>
+        </button>
+
+
+        <button
+          class="step reveal"
+          type="button"
+          data-label="RESONATE"
+          data-image=""
+        >
+          <span class="num">04</span>
+
+          <div>
+            <strong>RESONATE</strong>
+            <p>
+              리듬을 통해 상대와 공명하고,
+              억눌려 있던 감정을 되살려 통제에서 해방시킨다.
+            </p>
+          </div>
+        </button>
+
+      </div>
+
+
+      <!-- 오른쪽 / 모바일 상단 이미지 -->
+      <div class="gameplay-preview reveal">
+
+        <div class="gameplay-placeholder">
+          <span>PLAY VISUAL</span>
+          <strong>DISCOVER</strong>
+          <p>Gameplay image will appear here.</p>
+        </div>
+
+        <img
+          class="gameplay-preview-img"
+          src=""
+          alt=""
+        >
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+    <!-- 04 / CONTROLS -->
+<section class="section controls-section" id="controls">
+
+  <div class="controls-inner reveal">
+
+    <div class="section-label">04 / CONTROLS</div>
+
+    <h2 class="controls-title">
+      HOW TO PLAY
+    </h2>
+
+    <!-- KEYBOARD -->
+    <div class="control-block keyboard-block">
+
+      <div class="control-heading">
+        <span>01</span>
+        <h3>KEYBOARD</h3>
+      </div>
+
+      <div class="keyboard-list">
+
+        <div class="keyboard-item">
+          <div class="key-group">
+            <kbd>A</kbd>
+            <kbd>D</kbd>
+            <span class="key-or">/</span>
+            <kbd>←</kbd>
+            <kbd>→</kbd>
+          </div>
+
+          <div class="key-info">
+            <strong>MOVE</strong>
+            <p>플레이어 좌우 이동</p>
+          </div>
+        </div>
+
+        <div class="keyboard-item">
+          <div class="key-group">
+            <kbd class="key-wide">SPACE</kbd>
+          </div>
+
+          <div class="key-info">
+            <strong>NEXT</strong>
+            <p>대사 넘기기</p>
+          </div>
+        </div>
+
+        <div class="keyboard-item">
+          <div class="key-group">
+            <kbd class="key-wide">ESC</kbd>
+          </div>
+
+          <div class="key-info">
+            <strong>PAUSE</strong>
+            <p>설정 / 일시정지</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- GESTURE -->
+<div class="control-block gesture-block">
+
+  <div class="control-heading">
+    <span>02</span>
+
+    <div>
+      <h3>GESTURE CONTROLS</h3>
+      <p>손동작을 사용해 DJ 장비를 조작하세요.</p>
+
+      <!-- 모든 제스처 양손 사용 가능 -->
+      <div class="hand-support">
+        <span>L</span>
+        <span>R</span>
+        <strong>양손 모두 사용할 수 있습니다</strong>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="gesture-grid">
+
+    <!-- SCRATCH -->
+    <article class="gesture-card scratch">
+
+      <div class="gesture-icon">
+        <img
+          src="assets/icon_sc.png"
+          alt="Scratch 제스처"
+        >
+      </div>
+
+      <div class="gesture-text">
+        <span>DJ CONTROL 01</span>
+
+        <h4>SCRATCH</h4>
+
+        <p>
+          손가락을 모두 펴고<br>
+          좌우로 움직이기
+        </p>
+      </div>
+
+    </article>
+
+
+    <!-- DRUM -->
+    <article class="gesture-card drum">
+
+      <div class="gesture-icon">
+        <img
+          src="assets/icon_drum.png"
+          alt="Drum 제스처"
+        >
+      </div>
+
+      <div class="gesture-text">
+        <span>DJ CONTROL 02</span>
+
+        <h4>DRUM</h4>
+
+        <p>
+          검지로 가볍게<br>
+          탭하기
+        </p>
+      </div>
+
+    </article>
+
+
+    <!-- FADER -->
+    <article class="gesture-card fader">
+
+      <div class="gesture-icon">
+        <img
+          src="assets/icon_fader.png"
+          alt="Fader 제스처"
+        >
+      </div>
+
+      <div class="gesture-text">
+        <span>DJ CONTROL 03</span>
+
+        <h4>FADER</h4>
+
+        <p>
+          검지와 중지를 펴고<br>
+          위아래로 밀기
+        </p>
+      </div>
+
+    </article>
+
+
+    <!-- KNOB -->
+    <article class="gesture-card knob">
+
+      <div class="gesture-icon">
+        <img
+          src="assets/icon_knob.png"
+          alt="Knob 제스처"
+        >
+      </div>
+
+      <div class="gesture-text">
+        <span>DJ CONTROL 04</span>
+
+        <h4>KNOB</h4>
+
+        <p>
+          엄지와 검지를 고정한 채<br>
+          돌리기
+        </p>
+      </div>
+
+    </article>
+
+  </div>
+</div>
+
+
+    <!-- PLAY GUIDE -->
+  <div class="control-block play-guide">
+
+    <div class="control-heading">
+      <span>03</span>
+
+      <div>
+        <h3>PLAY GUIDE</h3>
+      </div>
+    </div>
+
+    <div class="guide-list">
+
+      <div class="guide-item">
+        <p>
+          • 손동작 인식을 위해 웹캠을 사용합니다.
+        </p>
+      </div>
+
+      <div class="guide-item">
+        <p>
+          • 웹캠은 손을 위에서 아래로 촬영하도록 고정해 주세요.
+        </p>
+      </div>
+
+      <div class="guide-item">
+        <p>
+          • 원활한 손동작 인식을 위해 주변 물건을 치우고 충분한 플레이 공간을 확보해 주세요.
+        </p>
+      </div>
+
+      <div class="guide-item">
+        <p>
+          • 플레이 중에는 웹캠의 위치와 각도를 변경하지 말아 주세요.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- ==============================
+         05 / TEAM
+         아래의 이름, 역할, 소개 문구는 직접 수정하면 됩니다.
+         사진은 assets/team1.svg ~ team4.svg 파일을 같은 이름의 PNG/JPG로 교체해도 됩니다.
+         팀원이 4명보다 적으면 필요 없는 <article class="team-card">...</article> 블록을 삭제하세요.
+         팀원이 더 많으면 블록 하나를 복사해서 추가하면 됩니다.
+         ============================== -->
+  <section class="section" id="team">
+    <div class="team-simple reveal">
+
+      <div class="section-label">05 / TEAM</div>
+
+      <!-- 팀 이름 -->
+      <h2 class="team-name">MP3</h2>
+
+      <p class="team-small-title">TEAM MEMBERS</p>
+
+      <div class="team-member-list">
+        <div class="team-member">
+          <span>01</span>
+          <h3>김은솔</h3>
+        </div>
+
+        <div class="team-member">
+          <span>02</span>
+          <h3>하영주</h3>
+        </div>
+
+        <div class="team-member">
+          <span>03</span>
+          <h3>이아름</h3>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  </main>
+
+  <footer class="footer">
+    <span>UNMUTE: The Vivid World</span>
+    <span>Responsive Game Introduction Website</span>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.14 });
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+    const worldFrame = document.querySelector('.world-frame');
+    const colorTrigger = document.querySelector('#characters');
+
+    const colorObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          document.body.classList.add('color-awake');
+          if (worldFrame) worldFrame.classList.add('awake');
+        }
+      });
+    }, { threshold: 0.22 });
+
+    if (colorTrigger) colorObserver.observe(colorTrigger);
+
+    const gameplaySteps = document.querySelectorAll('#gameplay .step');
+const gameplayPreview = document.querySelector('.gameplay-preview');
+const gameplayImage = document.querySelector('.gameplay-preview-img');
+const gameplayPlaceholderTitle =
+  document.querySelector('.gameplay-placeholder strong');
+
+
+function changeGameplay(step) {
+
+  gameplaySteps.forEach(item => {
+    item.classList.remove('active');
+  });
+
+  step.classList.add('active');
+
+
+  const imageSrc = step.dataset.image;
+  const label = step.dataset.label;
+
+
+  /* 이미지가 아직 없으면 제목만 변경 */
+  if (!imageSrc) {
+
+    gameplayPreview.classList.remove('has-image');
+
+    gameplayImage.removeAttribute('src');
+    gameplayImage.alt = '';
+
+    gameplayPlaceholderTitle.textContent = label;
+
+    return;
+  }
+
+
+  /* 이미지가 있을 때 */
+  gameplayImage.src = imageSrc;
+  gameplayImage.alt = `${label} gameplay`;
+
+  gameplayPreview.classList.add('has-image');
+}
+
+
+gameplaySteps.forEach(step => {
+
+  /* PC 클릭 / 모바일 터치 */
+  step.addEventListener('click', () => {
+    changeGameplay(step);
+  });
+
+});
+  </script>
+</body>
+</html>
