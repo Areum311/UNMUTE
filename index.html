@@ -273,7 +273,7 @@
     }
 
     .world-frame::after {
-      content: "ROOM / 01";
+      content: "ROOM";
       position: absolute;
       top: 18px;
       right: 20px;
@@ -326,8 +326,17 @@
       transform: scale(1.02);
     }
 
-    .character-card.protagonist img { object-position: 50% 18%; }
-    .character-card.echo img { object-position: 50% 18%; }
+    .character-card.protagonist img {
+        object-position: 50% 18%;
+        transform: translateY(0) scale(1);
+        transform-origin: center bottom;
+      }
+
+    .character-card.echo img {
+      object-position: 50% 18%;
+      transform: translateY(-25px) scale(1.12);
+      transform-origin: center bottom;
+    }
 
     .character-card.protagonist::after,
     .character-card.echo::after {
@@ -1776,10 +1785,6 @@
 
     <!-- ==============================
          05 / TEAM
-         아래의 이름, 역할, 소개 문구는 직접 수정하면 됩니다.
-         사진은 assets/team1.svg ~ team4.svg 파일을 같은 이름의 PNG/JPG로 교체해도 됩니다.
-         팀원이 4명보다 적으면 필요 없는 <article class="team-card">...</article> 블록을 삭제하세요.
-         팀원이 더 많으면 블록 하나를 복사해서 추가하면 됩니다.
          ============================== -->
   <section class="section" id="team">
     <div class="team-simple reveal">
@@ -1793,17 +1798,14 @@
 
       <div class="team-member-list">
         <div class="team-member">
-          <span>01</span>
           <h3>김은솔</h3>
         </div>
 
         <div class="team-member">
-          <span>02</span>
           <h3>하영주</h3>
         </div>
 
         <div class="team-member">
-          <span>03</span>
           <h3>이아름</h3>
         </div>
       </div>
