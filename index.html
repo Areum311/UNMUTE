@@ -453,7 +453,7 @@
     .gameplay-bg {
       position: absolute;
       inset: 0;
-      background-image: url('asset/bg_img_out.png');
+      background-image: url('assets/bg_img_out.png');
       background-size: cover;
       background-position: center;
       filter: saturate(.85) brightness(.56);
@@ -1119,16 +1119,16 @@
 
   grid-template-columns:
     minmax(0, 1.15fr)
-    minmax(360px, .85fr);
+    minmax(0, .85fr);
 
   grid-template-areas:
-    "heading preview"
+    "heading heading"
     "steps   preview";
 
   column-gap: 70px;
-  row-gap: 30px;
+  row-gap: 60px;
 
-  align-items: start;
+  align-items: center;
 }
 
 
@@ -1139,7 +1139,10 @@
 }
 
 .gameplay-heading h2 {
-  margin: 25px 0 10px;
+  margin: 25px 0 0;
+  font-size: clamp(36px, 6vw, 72px);   /* 다른 섹션 제목과 같은 규칙 */
+  letter-spacing: -.045em;
+  line-height: 1.02;
 }
 
 
@@ -1193,28 +1196,16 @@
 }
 
 .step .num {
-  padding-top: 4px;
-
-  font-size: 10px;
-  letter-spacing: .15em;
-
-  color: rgba(255, 255, 255, .45);
+  font-size: 12px;                     /* 10px → 12px */
+  color: rgba(255, 255, 255, .6);      /* .45 → .6 (더 밝게) */
 }
 
 .step strong {
-  display: block;
-  margin-bottom: 8px;
-
-  font-size: 18px;
+  font-size: 22px;                     /* 18px → 22px */
 }
 
 .step p {
-  margin: 0;
-
-  font-size: 14px;
-  line-height: 1.75;
-
-  color: rgba(255, 255, 255, .62);
+  font-size: 15px;                     /* 14px → 15px */
 }
 
 
@@ -1225,11 +1216,9 @@
 .gameplay-preview {
   grid-area: preview;
 
-  position: sticky;
-  top: 110px;
-
+  position: relative;
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 16 / 9;
 
   overflow: hidden;
 
@@ -1336,7 +1325,7 @@
     position: relative;
     top: auto;
 
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 16 / 9;
   }
 
 
@@ -1364,15 +1353,133 @@
     padding-left: 6px;
   }
 
-  .step strong {
-    font-size: 17px;
+  .step strong { font-size: 19px; }      /* 17px → 19px */
+.step p      { font-size: 14px; }
+
+}
+/* ========================================
+   05 / COLOR TEST
+======================================== */
+
+.color-test {
+  padding-top: 60px;        /* CONTROLS와의 간격 */
+  text-align: center;
+}
+
+.color-test-inner {
+  max-width: 640px;         /* 글이 퍼지지 않게 가운데 폭 제한 */
+  margin: 0 auto;
+}
+
+.color-test .section-label {
+  justify-content: center;  /* 라벨도 가운데 정렬 */
+}
+
+.color-test-copy {
+  margin: 22px 0 0;
+  color: #9ca6b4;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* 8색 막대 */
+.color-bar {
+  display: flex;
+  gap: 3px;                 /* 칸 사이 틈 */
+  max-width: 420px;         /* 막대 전체 길이 */
+  height: 6px;              /* 막대 두께 */
+  margin: 40px auto 0;      /* 위 문구와의 간격 */
+}
+
+.color-bar span {
+  flex: 1;
+  background: var(--c);
+  filter: grayscale(1) brightness(.6);
+  transition: filter .8s ease;
+  transition-delay: calc(.4s + var(--i) * 90ms);
+}
+
+.color-test-inner.visible .color-bar span {
+  filter: none;
+}
+
+/* 버튼 */
+.color-test-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 36px;         /* 막대와 버튼 사이 간격 */
+  padding: 16px 30px;       /* 버튼 크기 (위아래 / 좌우) */
+  border: 1px solid rgba(255, 255, 255, .28);
+  color: #fff;
+  font-size: 13px;
+  letter-spacing: .14em;
+  transition: border-color .3s ease, background .3s ease;
+}
+
+.color-test-btn:hover {
+  border-color: var(--pink);
+  background: rgba(236, 111, 157, .08);
+}
+
+.color-test-btn i {
+  font-style: normal;
+  transition: transform .3s ease;
+}
+
+.color-test-btn:hover i {
+  transform: translateX(4px);
+}
+
+/* 모바일 */
+@media (max-width: 760px) {
+  .color-test {
+    padding-top: 30px;
   }
 
-  .step p {
-    font-size: 13px;
-    line-height: 1.7;
+  .color-test-btn {
+    width: 100%;            /* 엄지로 누르기 쉽게 가로 전체 */
+    justify-content: center;
+    padding: 18px 20px;
   }
+}
+/* ========================================
+   TEAM LINK
+======================================== */
 
+.team-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;              /* 선과 글자 사이 간격 */
+  margin-top: 40px;       /* 팀원 이름과의 간격 */
+  padding: 12px 0;        /* 터치 영역 위아래 여유 */
+  color: #c5cbd4;
+  font-size: 13px;
+  letter-spacing: .12em;
+  transition: color .3s ease;
+}
+
+.team-link i {
+  width: 36px;            /* 앞 선의 길이 */
+  height: 1px;            /* 앞 선의 두께 */
+  background: linear-gradient(90deg, var(--pink), var(--cyan));
+  transition: width .3s ease;
+}
+
+.team-link:hover {
+  color: #fff;
+}
+
+.team-link:hover i {
+  width: 56px;            /* 마우스를 올리면 선이 늘어남 */
+}
+
+.gameplay-preview-img {
+  filter: grayscale(.35) brightness(.85);   /* 01~03: 살짝 바랜 느낌 */
+}
+
+.gameplay-preview[data-step="RESONATE"] .gameplay-preview-img {
+  filter: none;                             /* 04: 원래 색 그대로 */
 }
   </style>
 </head>
@@ -1455,10 +1562,10 @@
       <!-- 제목 -->
       <div class="gameplay-heading reveal">
         <div class="section-label">03 / Gameplay</div>
-        <h1>
+        <h2>
           도시를 걷고,<br>
           통제를 흔든다.
-        </h1>
+        </h2>
       </div>
 
 
@@ -1469,7 +1576,7 @@
           class="step reveal active"
           type="button"
           data-label="DISCOVER"
-          data-image=""
+          data-image="assets/gameplay_discover.jpg"
         >
           <span class="num">01</span>
 
@@ -1487,7 +1594,7 @@
           class="step reveal"
           type="button"
           data-label="STEP OUT"
-          data-image=""
+          data-image="assets/gameplay_step_out.jpg"
         >
           <span class="num">02</span>
 
@@ -1505,7 +1612,7 @@
           class="step reveal"
           type="button"
           data-label="CONFRONT"
-          data-image=""
+          data-image="assets/gameplay_confront.jpg"
         >
           <span class="num">03</span>
 
@@ -1523,7 +1630,7 @@
           class="step reveal"
           type="button"
           data-label="RESONATE"
-          data-image=""
+          data-image="assets/gameplay_resonate.jpg"
         >
           <span class="num">04</span>
 
@@ -1783,13 +1890,52 @@
   </div>
 </section>
 
+<!-- ==============================
+         05 / COLOR TEST
+         ============================== -->
+    <section class="section color-test" id="color-test">
+      <div class="color-test-inner reveal">
+
+        <div class="section-label">05 / Color Test</div>
+
+        <h2>당신의 음악은<br>어떤 색인가요?</h2>
+
+        <p class="color-test-copy">
+          9개의 질문으로 찾는 나의 뉴크롬 컬러.<br>
+          약 1분이면 충분합니다.
+        </p>
+
+        <!-- 8가지 결과 색: 처음엔 흑백 → 화면에 보이면 색이 살아남 -->
+        <div class="color-bar" aria-hidden="true">
+          <span style="--c:#FFD23F; --i:0"></span>
+          <span style="--c:#FF8A3D; --i:1"></span>
+          <span style="--c:#FF3B4E; --i:2"></span>
+          <span style="--c:#FF2DA0; --i:3"></span>
+          <span style="--c:#48E5C2; --i:4"></span>
+          <span style="--c:#9FD3FF; --i:5"></span>
+          <span style="--c:#9B6BFF; --i:6"></span>
+          <span style="--c:#1F8BFF; --i:7"></span>
+        </div>
+
+        <a
+          class="color-test-btn"
+          href="https://unmute-mp3.github.io/unmute-test/"
+          target="_blank"
+          rel="noopener"
+        >
+          테스트 시작하기 <i>→</i>
+        </a>
+
+      </div>
+    </section>
+
     <!-- ==============================
          05 / TEAM
          ============================== -->
   <section class="section" id="team">
     <div class="team-simple reveal">
 
-      <div class="section-label">05 / TEAM</div>
+      <div class="section-label">06 / TEAM</div>
 
       <!-- 팀 이름 -->
       <h2 class="team-name">MP3</h2>
@@ -1809,6 +1955,14 @@
           <h3>이아름</h3>
         </div>
       </div>
+      <a
+        class="team-link"
+        href="https://issueovo.github.io/mp3-team/"
+        target="_blank"
+        rel="noopener"
+      >
+        <i></i> 팀 소개 페이지 보기
+      </a>
 
     </div>
   </section>
